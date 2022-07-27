@@ -195,7 +195,7 @@ Comments on Initializing Positions and Velocities:
 xswitch and vswitch : so this is an internal decision to choose how to initialize the velocities and positions. Depending on the switch number you can decide which method to use. 
 
 In the book : positions x is initialized on a lattice ; velocities v is initialized from a unifrom distribution.
-In my code (by default switches = 0): positions x, first build a ndim lattice then randomly assign a position to each particle from the lattice ; velocities v initialized from the Boltzmann distribution. 
+In my code (by default switches = 0): positions x completely random ; velocities v initialized from the Boltzmann distribution. 
 
 In theory there are many different ways one can intialize and many different reasons to do so.
 One however needs to be careful, depending on the method about the treatment. 
