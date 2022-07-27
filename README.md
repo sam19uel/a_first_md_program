@@ -122,18 +122,16 @@ This is the subroutine that initializes the molecular dynamics program.
         ## Particel positions and velocities:
         # Note, rand takes from a uniform dis of [0,1)
 
-        ## Position Initialization Options: 
+        ## Position Initialization Options:       
         
         # xswitch = 0 DEFAULT
-        # 2D: X- Positions Placed on Grid, Y taken from Uniform Dist
+        # Build a ndim lattice, then randomly choose a position from the lattice for each particle
         if(xswitch == 0):
         
-            x_axis = np.linspace(0,self.box, self.npart)
-            y_axis = np.random.uniform(0,self.box, self.npart)
-            
-            for n in range(self.npart):
-                self.x[n][0] = x_axis[n]
-                self.x[n][1] = y_axis[n]
+            for k in range(self.ndim):
+                k_axis = np.linspace(0,self.box, self.npart)
+                for n in range(self.npart):
+                    self.x[n][k] = random.choice(k_axis)
 
         # xswitch = 1
         # Completely Random
