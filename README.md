@@ -237,4 +237,20 @@ def pe(self):
 
 Note: this process can be avoided completely if one decides to place them on a lattice directly, which one can easily implement if needed in the code, and setting a specific switch for it. 
 
+## Drawing the Particles
 
+It's always useful (and cool) to understand what is going on in a simulation, so this is a subroutine that draws the current positions of the particles.
+
+```python
+def draw_particles(self):
+        # Determine Appropriate Size of Figure:
+        plt.figure(figsize=(5,5))
+        axis = plt.gca()
+        
+        axis.set_xlim(-10,self.box+10)
+        axis.set_ylim(-10,self.box+10)
+
+        for i in range(self.npart):
+            axis.add_patch( plt.Circle(self.x[i], radius=0.5, linewidth=2, edgecolor='black') )
+        plt.show()
+```
