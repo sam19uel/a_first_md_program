@@ -281,7 +281,7 @@ class md:
 sim1 = md()
 
 # Initialisation
-sim1.init()
+sim1.init(1)
 sim1.draw_particles()
 print(sim1.v)
 
