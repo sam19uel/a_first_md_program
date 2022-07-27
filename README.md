@@ -108,33 +108,54 @@ Small note: this part is not explicitely mentioned in the book of what or how to
 This is the subroutine that initializes the molecular dynamics program.
 
 ```python
+##  Initialization of the MD Program
+    def init(self, xswitch = 0, vswitch = 0):
 
-def init(self):
+        # xswitch = a switch that decides how we initialize positions
+        # vswitch = a switch that decides how we initialize velocities.
 
         sumv = np.zeros(self.ndim)
         sumv2 = 0
         
-        # Particel positions and velocities:
+        #####################################
+        ## Particel positions and velocities:
         # Note, rand takes from a uniform dis of [0,1)
-        ## Positions
-        # Random
-        # self.x = np.random.uniform(0,self.box,(self.npart,self.ndim))
 
-        # 2D: X- Positions Placed on Grid, Y taken from Uniform Dist
-        x_axis = np.linspace(0,self.box, self.npart)
-        y_axis = np.random.uniform(0,self.box, self.npart)
+        ## Position Initialization Options: 
         
-        for n in range(self.npart):
-            self.x[n][0] = x_axis[n]
-            self.x[n][1] = y_axis[n]
+        # xswitch = 0 DEFAULT
+        # 2D: X- Positions Placed on Grid, Y taken from Uniform Dist
+        if(xswitch == 0):
+        
+            x_axis = np.linspace(0,self.box, self.npart)
+            y_axis = np.random.uniform(0,self.box, self.npart)
+            
+            for n in range(self.npart):
+                self.x[n][0] = x_axis[n]
+                self.x[n][1] = y_axis[n]
+
+        # xswitch = 1
+        # Completely Random
+        if (xswitch == 1):
+        
+            self.x = np.random.uniform(0,self.box,(self.npart,self.ndim))
 
 
-        ## Velocity Options: 
-        ## Uniform Dis
-        #self.v = np.random.uniform(-0.5,0.5,(self.npart,self.ndim))
-        # Boltzmann
-        factor = math.sqrt(self.k * self.temp / self.mass)
-        self.v = np.random.normal(loc=0,scale=factor,size=(self.npart, self.ndim))
+        ## Velocity Initialization Options: 
+        
+        # vswitch = 0 DEFALUT
+        # Boltzmann Distribution set at the Temperature
+
+        if (vswitch == 0):
+            factor = math.sqrt(self.k * self.temp / self.mass)
+            self.v = np.random.normal(loc=0,scale=factor,size=(self.npart, self.ndim))
+
+        # vxwitch = 1
+        # Uniform Dis
+        if (vswitch == 1):
+            self.v = np.random.uniform(-0.5,0.5,(self.npart,self.ndim))
+
+        #####################################
 
         # adding them up
         for i in range(self.npart):
