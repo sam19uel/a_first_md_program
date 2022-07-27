@@ -49,7 +49,9 @@ IMPORTANT: here I am refering to the class initialization of creating the md obj
 
 ```python
 def __init__(self):
-
+        
+        if (self.ndim == 1): 
+            print('Warning: ndim == 1!')
 
         # number of dimensions
         self.ndim = 2
