@@ -4,7 +4,7 @@ This folder is a reference molecular dynamics folder about writing a first md pr
 Outline of how this folder is organised.
 The main reference for this organisation comes from "Understanding Molecular Simulation by Daan Frenkel and Bernard Smith ".
 This folder is a reference molecular dynamics folder about writing a first md program.
-This is NOT a tutorial, but meant to be a companion to the book. 
+$This is NOT a tutorial, but meant to be a companion to the book.$ 
 
 note: The md_program as taught in the book is organised into a molecular dynamics look that performs the different steps as defined as subroutines. 
 
