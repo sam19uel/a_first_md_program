@@ -138,8 +138,12 @@ This is the subroutine that initializes the molecular dynamics program.
         # xswitch = 1
         # Completely Random
         if (xswitch == 1):
-        
-            self.x = np.random.uniform(0,self.box,(self.npart,self.ndim))
+            
+            for k in range(self.ndim):
+                k_axis = np.random.uniform(0,self.box, self.npart)
+                for n in range(self.npart):
+                    
+                    self.x[n][k] = k_axis[n]
 
 
         ## Velocity Initialization Options: 
@@ -242,17 +246,33 @@ Note: this process can be avoided completely if one decides to place them on a l
 It's always useful (and cool) to understand what is going on in a simulation, so this is a subroutine that draws the current positions of the particles.
 
 ```python
-def draw_particles(self):
-        # Determine Appropriate Size of Figure:
-        plt.figure(figsize=(5,5))
-        axis = plt.gca()
-        
-        axis.set_xlim(-10,self.box+10)
-        axis.set_ylim(-10,self.box+10)
+    def draw_particles(self):
 
-        for i in range(self.npart):
-            axis.add_patch( plt.Circle(self.x[i], radius=0.5, linewidth=2, edgecolor='black') )
-        plt.show()
+        if (self.ndim == 2):
+            # Determine Appropriate Size of Figure:
+            plt.figure(figsize=(5,5))
+            axis = plt.gca()
+            
+            axis.set_xlim(-10,self.box+10)
+            axis.set_ylim(-10,self.box+10)
+
+
+            for i in range(self.npart):
+                axis.add_patch( plt.Circle(self.x[i], radius=0.5, linewidth=2, edgecolor='black') )
+            plt.show()
+
+        if (self.ndim == 3):
+
+            fig = plt.figure()
+            axis = fig.add_subplot(projection='3d')
+
+            axis.set_xlim(-5,self.box+5)
+            axis.set_ylim(-5,self.box+5)
+            axis.set_zlim(-5,self.box+5)
+
+            for i in range(self.npart):
+                axis.scatter( self.x[i][0], self.x[i][1], self.x[i][2], marker="o", c='blue', linewidth=2, edgecolor='black')
+            plt.show()
 ```
 
 ## Calculation of the Forces
