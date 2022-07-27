@@ -42,7 +42,7 @@ while (sim1.t < sim1.tmax):
 
 Notes: So this is the principle MD Loop that performs the simuation. The hierarchical organistion is as follows. I defined a class called "md" which is a class that defines a md_simulation object, where the sub_routines of the book are defined as internal functions of the class. Where here we created a "md object" called "sim1".  
 
-## class initialization
+## md_class initialization
 
 IMPORTANT: here I am refering to the class initialization of creating the md object, and not the initialization subroutine of the md as refered to in the book which we call "init". 
 
