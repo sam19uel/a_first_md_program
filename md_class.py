@@ -77,23 +77,27 @@ class md:
         ## Position Initialization Options: 
         
         # xswitch = 0 DEFAULT
-        # Build a ndim lattice, then randomly choose a position from the lattice for each particle
-        if(xswitch == 0):
-        
-            for k in range(self.ndim):
-                k_axis = np.linspace(0,self.box, self.npart)
-                for n in range(self.npart):
-                    self.x[n][k] = random.choice(k_axis)
-                                        
-        # xswitch = 1
         # Completely Random
-        if (xswitch == 1):
+        if(xswitch == 0):
 
+            
             for k in range(self.ndim):
                 k_axis = np.random.uniform(0,self.box, self.npart)
                 for n in range(self.npart):
                     
                     self.x[n][k] = k_axis[n]
+        
+            
+                                        
+        # xswitch = 1
+        # Build a ndim lattice, then randomly choose a position from the lattice for each particle
+        if (xswitch == 1):
+
+            for k in range(self.ndim):
+                k_axis = np.linspace(0,self.box, self.npart)
+                for n in range(self.npart):
+                    self.x[n][k] = random.choice(k_axis)
+
 
 
 
@@ -281,7 +285,7 @@ class md:
 sim1 = md()
 
 # Initialisation
-sim1.init(1)
+sim1.init()
 sim1.draw_particles()
 print(sim1.v)
 
