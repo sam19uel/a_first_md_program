@@ -190,7 +190,7 @@ Comments on Initializing Positions and Velocities:
 xswitch and vswitch : so this is an internal decision to choose how to initialize the velocities and positions. Depending on the switch number you can decide which method to use. 
 
 In the book : positions x is initialized on a lattice ; velocities v is initialized from a unifrom distribution.
-In my code (by default switches = 0): positions x, x-componenets on an equally spaced lattice, y-components randomnly ; velocities v initialized from the Boltzmann distribution. 
+In my code (by default switches = 0): positions x, first build a ndim lattice then randomly assign a position to each particle from the lattice ; velocities v initialized from the Boltzmann distribution. 
 
 In theory there are many different ways one can intialize and many different reasons to do so.
 One however needs to be careful, depending on the method about the treatment. 
@@ -198,7 +198,7 @@ One however needs to be careful, depending on the method about the treatment.
 For example : 
 ### Minimization
 
-Because I do not choose to put the particles on a lattice, one possibility is that the particles find themselves too close to one another, and this leads to an explosion of the potential energy, so I iterate through the particles and minimize the potential energy by shifting the postiions such that potential energy is minimized for a specific number of steps. To do this, there is also a subroutine that calculated the potential energy *pe*, which is a LJ-potential with a cutoff specified by one of the variables of the simulation.
+One possibile danger is that the particles find themselves too close to one another, and this leads to an explosion of the potential energy, so I iterate through the particles and minimize the potential energy by shifting the postiions such that potential energy is minimized for a specific number of steps. To do this, there is also a subroutine that calculated the potential energy *pe*, which is a LJ-potential with a cutoff specified by one of the variables of the simulation.
 
 ```python
 def minimize(self, min_steps, max_dr = 0.15):
@@ -245,6 +245,11 @@ It's always useful (and cool) to understand what is going on in a simulation, so
 
 ```python
     def draw_particles(self):
+    
+        # 1D
+        if (self.ndim == 1):
+
+            print('Hard to draw 1D. :/')
 
         if (self.ndim == 2):
             # Determine Appropriate Size of Figure:
