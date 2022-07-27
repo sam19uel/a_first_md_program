@@ -15,7 +15,7 @@ Therefore the code is organised in a similar way such that one can use it as a r
 ## md_loop
 
 ```python
-## Runniing the Simulation MD Loop
+## Running the Simulation MD Loop
 
 # Creating the MD Object
 sim1 = md()
@@ -38,6 +38,10 @@ while (sim1.t < sim1.tmax):
     # Sampling Data Output if needed
 
 ```
+
+Notes: So this is the principle MD Loop that performs the simuation. The hierarchical organistion is as follows. I defined a class called "md" which is a class that defines a md_simulation object, where the sub_routines of the book are defined as internal functions of the class. Where here we created a "md object" called "sim1".  
+
+
 
 
 
