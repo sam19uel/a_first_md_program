@@ -182,4 +182,7 @@ This is the subroutine that initializes the molecular dynamics program.
         self.sumv2 = sumv2
 ```
 
+Comments on Initializing Positions and Velocities: 
+
+xswitch and vswitch : 
 
