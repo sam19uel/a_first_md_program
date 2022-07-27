@@ -3,6 +3,7 @@
 import numpy as np
 import math
 import matplotlib.pyplot as plt
+import random
 
 class md:
     def __init__(self):
@@ -60,6 +61,9 @@ class md:
     ##  Initialization of the MD Program
     def init(self, xswitch = 0, vswitch = 0):
 
+        if (self.ndim == 1): 
+            print('Warning: ndim == 1!')
+
         # xswitch = a switch that decides how we initialize positions
         # vswitch = a switch that decides how we initialize velocities.
 
@@ -73,21 +77,24 @@ class md:
         ## Position Initialization Options: 
         
         # xswitch = 0 DEFAULT
-        # 2D: X- Positions Placed on Grid, Y taken from Uniform Dist
+        # Build a ndim lattice, then randomly choose a position from the lattice for each particle
         if(xswitch == 0):
         
-            x_axis = np.linspace(0,self.box, self.npart)
-            y_axis = np.random.uniform(0,self.box, self.npart)
-            
-            for n in range(self.npart):
-                self.x[n][0] = x_axis[n]
-                self.x[n][1] = y_axis[n]
-
+            for k in range(self.ndim):
+                k_axis = np.linspace(0,self.box, self.npart)
+                for n in range(self.npart):
+                    self.x[n][k] = random.choice(k_axis)
+                                        
         # xswitch = 1
         # Completely Random
         if (xswitch == 1):
-        
-            self.x = np.random.uniform(0,self.box,(self.npart,self.ndim))
+
+            for k in range(self.ndim):
+                k_axis = np.random.uniform(0,self.box, self.npart)
+                for n in range(self.npart):
+                    
+                    self.x[n][k] = k_axis[n]
+
 
 
         ## Velocity Initialization Options: 
@@ -131,16 +138,40 @@ class md:
         self.sumv2 = sumv2
 
     def draw_particles(self):
-        # Determine Appropriate Size of Figure:
-        plt.figure(figsize=(5,5))
-        axis = plt.gca()
-        
-        axis.set_xlim(-10,self.box+10)
-        axis.set_ylim(-10,self.box+10)
 
-        for i in range(self.npart):
-            axis.add_patch( plt.Circle(self.x[i], radius=0.5, linewidth=2, edgecolor='black') )
-        plt.show()
+        # 1D
+        if (self.ndim == 1):
+
+            print('Hard to draw 1D. :/')
+            
+        # 2D
+        if (self.ndim == 2):
+            # Determine Appropriate Size of Figure:
+            plt.figure(figsize=(5,5))
+            axis = plt.gca()
+            
+            axis.set_xlim(-10,self.box+10)
+            axis.set_ylim(-10,self.box+10)
+
+
+            for i in range(self.npart):
+                axis.add_patch( plt.Circle(self.x[i], radius=0.5, linewidth=2, edgecolor='black') )
+            plt.show()
+
+        # 3D
+        if (self.ndim == 3):
+
+            fig = plt.figure()
+            axis = fig.add_subplot(projection='3d')
+
+            axis.set_xlim(-5,self.box+5)
+            axis.set_ylim(-5,self.box+5)
+            axis.set_zlim(-5,self.box+5)
+
+            for i in range(self.npart):
+                axis.scatter( self.x[i][0], self.x[i][1], self.x[i][2], marker="o", c='blue', linewidth=2, edgecolor='black')
+            plt.show()
+
 
     def minimize(self, min_steps, max_dr = 0.15):
         for i in range(min_steps):
@@ -252,6 +283,7 @@ sim1 = md()
 # Initialisation
 sim1.init()
 sim1.draw_particles()
+print(sim1.v)
 
 # Minimize Potential Energy
 sim1.minimize(2000)
