@@ -235,4 +235,6 @@ def pe(self):
     return pe
 ```
 
+Note: this process can be avoided completely if one decides to place them on a lattice directly, which one can easily implement if needed in the code, and setting a specific switch for it. 
+
 
