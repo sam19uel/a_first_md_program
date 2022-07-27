@@ -4,6 +4,7 @@ This folder is a reference molecular dynamics folder about writing a first md pr
 Outline of how this folder is organised.
 The main reference for this organisation comes from "Understanding Molecular Simulation by Daan Frenkel and Bernard Smith ".
 This folder is a reference molecular dynamics folder about writing a first md program.
+
 **This is NOT a tutorial, but meant to be a companion to the book.**
 
 note: The md_program as taught in the book is organised into a molecular dynamics look that performs the different steps as defined as subroutines. 
@@ -184,5 +185,54 @@ This is the subroutine that initializes the molecular dynamics program.
 
 Comments on Initializing Positions and Velocities: 
 
-xswitch and vswitch : 
+xswitch and vswitch : so this is an internal decision to choose how to initialize the velocities and positions. Depending on the switch number you can decide which method to use. 
+
+In the book : positions x is initialized on a lattice ; velocities v is initialized from a unifrom distribution.
+In my code (by default switches = 0): positions x, x-componenets on an equally spaced lattice, y-components randomnly ; velocities v initialized from the Boltzmann distribution. 
+
+In theory there are many different ways one can intialize and many different reasons to do so.
+One however needs to be careful, depending on the method about the treatment. 
+
+For example : 
+### Minimization
+
+Because I do not choose to put the particles on a lattice, one possibility is that the particles find themselves too close to one another, and this leads to an explosion of the potential energy, so I iterate through the particles and minimize the potential energy by shifting the postiions such that potential energy is minimized for a specific number of steps. To do this, there is also a subroutine that calculated the potential energy *pe*. 
+
+```python
+def minimize(self, min_steps, max_dr = 0.15):
+        for i in range(min_steps):
+            p = np.random.randint(0,self.npart)
+            dr = np.random.random_sample(size=2)*2*max_dr - max_dr
+            pe_bef = self.pe()
+            self.x[p] += dr
+            pe_after = self.pe()
+            if(pe_bef < pe_after):
+                self.x[p] -= dr
+        
+        # Since the minimizing step changes the positions, we need to re-estimate the "previous positions"
+        for i in range(self.npart):
+            self.xm[i] = self.x[i] - self.v[i]*self.dt
+
+    def pe(self):
+
+        pe = 0
+
+        # loop over all pairs to calculate the force
+        for i in range(self.npart - 1):
+            for j in range(i+1,self.npart):
+                xr = self.x[i] - self.x[j]
+                # periodic BC
+                xr = xr - self.box*np.rint(xr/self.box)
+                r2 = (np.linalg.norm(xr))**2
+                                          
+                # test cutoff
+                if (r2 < self.rc2):
+                    r2i = 1/r2
+                    r6i = r2i**3
+                    # LJ Potential
+                    ff = 48*r2i*r6i*(r6i-0.5)
+                    pe = pe + 4*r6i*(r6i - 1) - self.ecut
+        return pe
+```
+
 
