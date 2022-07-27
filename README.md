@@ -196,7 +196,7 @@ One however needs to be careful, depending on the method about the treatment.
 For example : 
 ### Minimization
 
-Because I do not choose to put the particles on a lattice, one possibility is that the particles find themselves too close to one another, and this leads to an explosion of the potential energy, so I iterate through the particles and minimize the potential energy by shifting the postiions such that potential energy is minimized for a specific number of steps. To do this, there is also a subroutine that calculated the potential energy *pe*. 
+Because I do not choose to put the particles on a lattice, one possibility is that the particles find themselves too close to one another, and this leads to an explosion of the potential energy, so I iterate through the particles and minimize the potential energy by shifting the postiions such that potential energy is minimized for a specific number of steps. To do this, there is also a subroutine that calculated the potential energy *pe*, which is a LJ-potential with a cutoff specified by one of the variables of the simulation.
 
 ```python
 def minimize(self, min_steps, max_dr = 0.15):
@@ -213,26 +213,26 @@ def minimize(self, min_steps, max_dr = 0.15):
         for i in range(self.npart):
             self.xm[i] = self.x[i] - self.v[i]*self.dt
 
-    def pe(self):
+def pe(self):
 
-        pe = 0
+    pe = 0
 
-        # loop over all pairs to calculate the force
-        for i in range(self.npart - 1):
-            for j in range(i+1,self.npart):
-                xr = self.x[i] - self.x[j]
-                # periodic BC
-                xr = xr - self.box*np.rint(xr/self.box)
-                r2 = (np.linalg.norm(xr))**2
-                                          
-                # test cutoff
-                if (r2 < self.rc2):
-                    r2i = 1/r2
-                    r6i = r2i**3
-                    # LJ Potential
-                    ff = 48*r2i*r6i*(r6i-0.5)
-                    pe = pe + 4*r6i*(r6i - 1) - self.ecut
-        return pe
+    # loop over all pairs to calculate the force
+    for i in range(self.npart - 1):
+        for j in range(i+1,self.npart):
+            xr = self.x[i] - self.x[j]
+            # periodic BC
+            xr = xr - self.box*np.rint(xr/self.box)
+            r2 = (np.linalg.norm(xr))**2
+
+            # test cutoff
+            if (r2 < self.rc2):
+                r2i = 1/r2
+                r6i = r2i**3
+                # LJ Potential
+                ff = 48*r2i*r6i*(r6i-0.5)
+                pe = pe + 4*r6i*(r6i - 1) - self.ecut
+    return pe
 ```
 
 
