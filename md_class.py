@@ -145,7 +145,7 @@ class md:
     def minimize(self, min_steps, max_dr = 0.15):
         for i in range(min_steps):
             p = np.random.randint(0,self.npart)
-            dr = np.random.random_sample(size=2)*2*max_dr - max_dr
+            dr = np.random.random_sample(size=self.ndim)*2*max_dr - max_dr
             pe_bef = self.pe()
             self.x[p] += dr
             pe_after = self.pe()
